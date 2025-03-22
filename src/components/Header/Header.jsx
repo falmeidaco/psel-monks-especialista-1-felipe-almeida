@@ -2,13 +2,17 @@ import monkLogo from '../../assets/monks.svg'
 import styled from "styled-components";
 
 export const SHeader = styled.header`
-background-color: #2D2D2D;
+  background-color:rgba(0,0,0,.1);
+  width:100%;
+  position:absolute;
   height: var(--header-height);
+  z-index: 10;
   padding: 0 3rem;
   display: flex;
   align-items: center;
   color: #EAE8E4;
   gap: 2rem;
+  box-sizing: border-box;
   nav ul {
     display: flex;
     gap: 1rem;
@@ -41,7 +45,7 @@ export default function Header() {
   return (
     <SHeader>
       <div>
-        <img src={monkLogo} alt="Monk Logo" />
+        <img src={monkLogo} alt="Monk Logo" title='Monk Agencia' />
       </div>
       <nav>
         <ul>
