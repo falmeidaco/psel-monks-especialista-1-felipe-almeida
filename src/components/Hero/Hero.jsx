@@ -3,15 +3,15 @@ import monkImg from "../../assets/monks-hero-image.svg";
 import scrollImg from "../../assets/scroll.svg";
 
 export const SSection = styled.section`
-  background-color: var(--color-bg-dark);
+  background-color: var(--color-dark);
   border-radius: 0 0 30px 30px;
   overflow: hidden;
   position:relative;
   display:flex;
   align-items: stretch;
-  min-height:100dvh;
+  min-height:600px;
   padding-top: var(--header-height);
-  box-sizing: border-box;
+  margin-bottom:3rem;
   @media (max-width: 768px) {
     min-height:auto;
     height: 100dvh;
@@ -21,7 +21,6 @@ export const SSection = styled.section`
 
 export const SDivCopy = styled.div`
   max-width:50%;
-  box-sizing: border-box;
   padding: 0 0 0 3rem;
   display: flex;
   flex-direction: column;

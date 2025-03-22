@@ -1,5 +1,6 @@
 import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
+import PostList from './components/Post/PostList'
 
 function App() {
 
@@ -7,9 +8,7 @@ function App() {
     <>
       <Header />
       <Hero />
-      <div>
-        Olá mundo!
-      </div>
+      <PostList />
     </>
   )
 }
