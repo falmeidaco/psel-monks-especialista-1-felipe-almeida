@@ -2,7 +2,6 @@ import monkLogo from '../../assets/monks.svg'
 import styled from "styled-components";
 
 export const SHeader = styled.header`
-  width:100%;
   position:absolute;
   height: var(--header-height);
   z-index: 10;
