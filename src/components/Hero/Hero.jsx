@@ -63,7 +63,7 @@ export const SImage = styled.img`
   position: absolute;
   height: 100%;
   width: auto;
-  right: 0;
+  right: -10%;
   top:0;
   @media (max-width: 768px) {
     left:40%;

@@ -2,7 +2,6 @@ import monkLogo from '../../assets/monks.svg'
 import styled from "styled-components";
 
 export const SHeader = styled.header`
-  background-color:rgba(0,0,0,.1);
   width:100%;
   position:absolute;
   height: var(--header-height);
@@ -37,6 +36,12 @@ export const SHeader = styled.header`
           visibility:visible;
         }
       }
+    }
+  }
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+    nav {
+      display: none;
     }
   }
 `;
