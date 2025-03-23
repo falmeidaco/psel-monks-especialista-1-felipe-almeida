@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
-import Produto from "../Post/Produto";
+import Produto from "./Produto";
 import styled from "styled-components";
 
 const ProdutosStyled = styled.div`
@@ -8,7 +8,8 @@ const ProdutosStyled = styled.div`
   display:flex;
   flex-direction: column;
   gap: 2rem;
-  .heading {
+  & > .heading {
+    font-weight: 400;
     font-size: 2.5rem;
   }
   .tags {
@@ -33,7 +34,6 @@ const ProdutosStyled = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
   }
-  
 `;
 
 export default function Produtos({ term }) {
@@ -67,7 +67,7 @@ export default function Produtos({ term }) {
 
   return (
     <ProdutosStyled as="section">
-      <h2 className="heading">Produtos</h2>
+      <h2 className="heading">{title}</h2>
       <div className="tags">
         {tags.map((tag, index) => (
           <a href={`#${tag.slug}`} key={index}>{tag.name}</a>
