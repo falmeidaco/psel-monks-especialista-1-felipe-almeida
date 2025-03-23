@@ -6,7 +6,7 @@ const DestaquesStyled = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border-radius: 1.5rem;
   }
 `;

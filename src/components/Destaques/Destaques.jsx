@@ -5,27 +5,34 @@ import styled from "styled-components"
 
 
 const DestaquesStyled = styled.div`
-  margin:0 3rem 3rem;
-
   .pinterest-style {
     display: grid;
-    gap: 1rem;
+    gap: 1.5rem;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 150px);
+    grid-template-rows: repeat(4, 180px);
 
-    & > .title {
-      font-weight: 400;
-      margin-bottom:1rem;
-      font-size:2.5rem;
+    & > .heading {
+      .title {
+        font-weight: 400;
+        font-size: 2.5rem;
+        margin-bottom:.5rem;
+        
+        @media (max-width: 768px) {
+          margin-bottom:.5rem;
+          font-size: 1.5rem;
+        }
+      }
+
+      .description {
+        font-size: 1.5rem;
+        line-height: 1.5;
+
+        @media (max-width: 768px) {
+          font-size: 1rem;
+          margin-bottom:1rem;
+        }
+      }
     }
-
-    & > p {
-      font-size: 1.5rem;
-      font-weight: 200;
-      line-height: 1.5;
-      margin-bottom:2rem;
-    }
-
 
     a:nth-child(1) {
       grid-row: 1 / 2;
@@ -44,26 +51,11 @@ const DestaquesStyled = styled.div`
       grid-column: 2 / 3;
       grid-row: 3 / 5;
     }
-
     
-  }
-
-
-  @media (max-width: 768px) {
-    margin:auto 1rem;
-
-    .pinterest-style {
+    @media (max-width: 768px) {
+      gap: 1rem;
       display:flex;
       flex-direction:column;
-
-      &>.title {
-        margin-bottom:.5rem;
-        font-size: 1.5rem;  
-      }
-      & > p {
-        font-size: 1rem;
-        margin-bottom:1rem;
-      }
     }
   }
 `;
@@ -94,12 +86,12 @@ export default function PostListFeature({ term }) {
   return (
     <DestaquesStyled>
       <div className='pinterest-style'>
-        <div>
+        <div className='heading'>
           <h3 className="title">{title}</h3>
-          <p>{description}</p>
+          <p className='description'>{description}</p>
         </div>
-        {posts.map((post) => (
-          <Destaque layout="image-only" key={post.id} post={post} />
+        {posts.map((post, index) => (
+          <Destaque  key={index} post={post} />
         ))}
       </div>
     </DestaquesStyled>
