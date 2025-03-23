@@ -17,8 +17,8 @@ function App() {
       <Hero />
       <Posts term="geral" />
       <Destaques term="destaques" />
-      <Produtos term="produtos" />
       <AppBanner />
+      <Produtos term="produtos" />
       <Contato />
       <Footer />
     </>
