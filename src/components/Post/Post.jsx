@@ -26,8 +26,17 @@ const SPostText = styled.div`
     font-weight: 400;
   }
   p {
+    font-size: 1.2rem;
     margin: 0;
     font-weight: 300;
+  }
+  @media (max-width: 768px) {
+    h3 {
+      font-size: 1.2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
   }
 `;
 

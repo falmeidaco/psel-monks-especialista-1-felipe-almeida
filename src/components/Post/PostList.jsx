@@ -14,6 +14,7 @@ const SHeading = styled.h2`
   font-weight: 400;
   margin-bottom:1rem;
   @media (max-width: 768px) {
+    margin-bottom:.5rem;
     font-size: 1.5rem;
   }
 `;
@@ -36,18 +37,25 @@ const SList = styled.div`
 
 export default function PostList() {
 
-  const [ posts, setPosts ] = useState(null);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/wp-json/custom/v1/posts')
+    fetch('http://localhost:8000/wp-json/custom/v1/posts-by-term?term=geral')
       .then(response => response.json())
-      .then(data => setPosts(data));
+      .then(data => {
+          setTitle(data.name);
+          setDescription(data.description);
+          setPosts(data.posts)
+        }
+      );
   }, []);
 
   return (
     <SSection>
-      <SHeading>Lorem ipsum dolor sit, amet consectetur</SHeading>
-      <SText>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque reprehenderit doloribus quasi quas cum nesciunt asperiores in.</SText>
+      <SHeading>{title}</SHeading>
+      <SText>{description}</SText>
       {posts === null ?
         <p>Carregando...</p>
         :
