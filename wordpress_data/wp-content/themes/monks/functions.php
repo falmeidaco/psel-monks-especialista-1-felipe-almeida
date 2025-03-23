@@ -214,9 +214,11 @@ function monks_get_menu_items($request)
 
 function monks_handle_formsubmission_register(WP_REST_Request $request)
 {
+  // Resgata o valor do token para requisição post
+  $form_token = get_option('form_token', '');
   // Verifica o cabeçalho X-Form-Token
   $token = $request->get_header('X-Form-Token');
-  if ($token !== 'monks2025') {
+  if ($token !== $form_token) {
     return new WP_Error('token_invalido', 'Acesso negado. Token inválido.', ['status' => 403]);
   }
 
@@ -417,3 +419,38 @@ function monks_handle_preflight()
 }
 
 add_action('init', 'monks_handle_preflight');
+
+
+// Adiciona o campo "Form Token" na página de configurações Gerais
+// Adiciona o campo "Form Token" na página de configurações Gerais
+function monks_add_form_token_setting() {
+  add_settings_field(
+      'form_token', 
+      'Form Token',
+      'render_form_token_field',
+      'general'
+  );
+
+  register_setting('general', 'form_token', [
+      'type' => 'string',
+      // Usando função de sanitização customizada
+      'sanitize_callback' => 'monks_sanitize_form_token', 
+      'default' => '',
+  ]);
+}
+
+// Função customizada para sanitizar e limitar o campo "Form Token" a 32 caracteres
+function monks_sanitize_form_token($value) {
+  // Sanitiza o campo
+  $value = sanitize_text_field($value); 
+  // Limita a 32 caracteres
+  return substr($value, 0, 32); 
+}
+
+// Exibe o campo de input no painel do WordPress
+function render_form_token_field() {
+  $form_token = get_option('form_token', '');
+  echo '<input type="text" id="form_token" name="form_token" value="' . esc_attr($form_token) . '" class="regular-text" maxlength="32">';
+}
+
+add_action('admin_init', 'monks_add_form_token_setting');

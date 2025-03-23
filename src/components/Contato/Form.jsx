@@ -280,7 +280,7 @@ export default function Form() {
         const response = await api.post('/new-formsubmission', values, {
           headers: {
             'Content-Type': 'application/json',
-            'X-Form-Token': 'monks2025@'
+            'X-Form-Token': import.meta.env.VITE_API_POST_TOKEN
           }
         });
         setValues({
@@ -288,6 +288,7 @@ export default function Form() {
           phone: '',
           email: '',
           message: '',
+          challenge: '',
         })
         setMessage({
           type:"success",
@@ -344,7 +345,7 @@ export default function Form() {
           =
         </div>
         <div className="challenge-answer">
-          <InputStyled className={errors.challenge ? "error" : ""} name="challenge" onChange={handleChange} value={values.challenge} required maxLength="2" type="number" placeholder="Resposta" />
+          <InputStyled className={errors.challenge ? "error" : ""} name="challenge" onChange={handleChange} value={values.challenge || ''} required maxLength="2" type="number" placeholder="Resposta" />
         </div>
       </FormChallengeStyled>
 
