@@ -16,6 +16,11 @@ const ContatoStyled = styled.div`
   .content-form {
     flex:1;
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+  }
 `;
 export default function Contato() {
   return (

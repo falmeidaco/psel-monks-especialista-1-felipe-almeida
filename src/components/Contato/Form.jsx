@@ -60,7 +60,24 @@ const FormStyled = styled.div`
   
   
   @media (max-width: 768px) {
+    .heading {
+      .title {
+        font-size: 1.5rem;
+      }
 
+      .text {
+        font-size: 1rem;
+      }
+    }
+
+    .form-fields {
+      flex-direction: column;
+    }
+
+    .form-submit {
+      button[type="submit"] {
+      }
+    }
   }
 `
 
@@ -76,6 +93,10 @@ const InputStyled = styled.input`
   &::placeholder {
     color: var(--color-dark);
     opacity: .5;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 1rem;
   }
 `;
 
@@ -103,6 +124,19 @@ const FormChallengeStyled = styled.div`
 
   .challenge-answer {
     flex:1;
+  }
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    gap:1rem;
+    .text {
+      font-size:1.2rem;
+      flex-basis: 100%;
+    }
+    .challenge-answer {
+      flex-grow: 1;
+      flex-shrink: 0;
+    }
   }
 `
 
