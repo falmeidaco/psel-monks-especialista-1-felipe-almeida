@@ -164,7 +164,7 @@ export default function Form() {
           <InputStyled required placeholder="Campo 1" type="text" name="field1" />
         </p>
         <p>
-          <InputStyled required placeholder="Campo 2" value="Texto inicial" type="text" name="field2" />
+          <InputStyled required placeholder="Campo 2" type="text" name="field2" />
         </p>
         <p>
           <InputStyled required placeholder="Campo 3" type="text" name="field3" />

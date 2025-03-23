@@ -1,20 +1,16 @@
 <?php
 
-/* Custom post type Conteudo */
-
-/**
- * Registers a custom post type 'Conteudo'.
- *
- * This function sets up a custom post type called 'viagem' with various options,
- * including labels, archive support, menu position, and supported features such
- * as title, editor, and thumbnail.
- *
- * @return void
- */
-
 function monks_setup_theme()
 {
+  // Habilita suporte para thumbnails
   add_theme_support('post-thumbnails');
+
+  // Registra os menus
+  register_nav_menus( array(
+    'primary' => 'Primary Navigation',
+    'secondary' => 'Secondary Navigation',
+    'social' => 'Social Links'
+  ));
 }
 
 add_action('after_setup_theme', 'monks_setup_theme');
@@ -120,6 +116,34 @@ function monks_api_get_posts_by_term($request)
   return rest_ensure_response($response);
 }
 
+function monks_get_menu_items( $request ) {
+  $menu_slug = $request->get_param('menu');
+
+  $menu = wp_get_nav_menu_object($menu_slug);
+
+  if (!$menu) {
+      return new WP_Error('menu_nao_encontrado', 'Menu não encontrado', ['status' => 404]);
+  }
+
+  $menu_items = wp_get_nav_menu_items($menu->term_id);
+
+  $formatted_menu = [];
+
+  foreach ($menu_items as $item) {
+      $formatted_menu[] = [
+          'id'    => $item->ID,
+          'title' => $item->title,
+          'url'   => $item->url,
+          'parent' => $item->menu_item_parent,
+          'order'  => $item->menu_order,
+          'type'   => $item->type, 
+          'classes' => implode(' ', $item->classes)
+      ];
+  }
+
+  return rest_ensure_response(['menu' => $formatted_menu]);
+}
+
 // Registra o endpoint na API REST do WordPress
 function monks_register_api_routes()
 {
@@ -150,6 +174,20 @@ function monks_register_api_routes()
     ],
     'permission_callback' => '__return_true',
   ));
+
+  register_rest_route('custom/v1', '/menu', array(
+    'methods'  => 'GET',
+    'callback' => 'monks_get_menu_items',
+    'args'     => [
+        'menu' => [
+            'required' => true,
+            'validate_callback' => function($param) {
+                return !empty($param) && is_string($param);
+            }
+        ]
+    ],
+    'permission_callback' => '__return_true',
+));
 }
 
 add_action('rest_api_init', 'monks_register_api_routes');
