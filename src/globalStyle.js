@@ -40,6 +40,10 @@ export const GlobalStyle = createGlobalStyle`
     margin: 0 auto;
   }
 
+  #site-sprites {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     :root {
       --content-margin: 1rem;
