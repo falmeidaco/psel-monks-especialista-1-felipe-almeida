@@ -3,6 +3,7 @@ import Hero from './components/Hero/Hero'
 import PostList from './components/Post/PostList'
 import PostListFeature from './components/Post/PostListFeature'
 import AppBanner from './components/AppBanner/AppBanner'
+import Produtos from './components/Produtos/Produtos'
 
 function App() {
 
@@ -10,6 +11,7 @@ function App() {
     <>
       <Header />
       <Hero />
+      <Produtos term="produtos" />
       <PostList term="geral" />
       <PostListFeature term="destaques" />
       <AppBanner />

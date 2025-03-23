@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 
 
-const SPost = styled.a`
+const PostStyled = styled.a`
   ${(props) => {
     switch (props.$layout) {
       case "image-only":
@@ -41,11 +41,11 @@ const SPost = styled.a`
   }}
 `;
 
-SPost.defaultProps = {
+PostStyled.defaultProps = {
   layout: "default"
 }
 
-const SPostText = styled.div`
+const PostTextStyled = styled.div`
   display:flex;
   flex-direction:column;
   gap:.2rem;
@@ -72,14 +72,17 @@ const SPostText = styled.div`
 
 export default function Post({ post, layout }) {
   return (
-    <SPost $layout={(layout) ? layout : "default"} href="#">
+    <PostStyled $layout={(layout) ? layout : "default"} href="#">
+      {(post.thumbnail_url.trim() !== "") ? 
       <div className="media">
         <img src={post.thumbnail_url} alt="Imagem do post" />
-      </div>
-      <SPostText className="text">
+      </div> 
+      : ""}
+      <PostTextStyled className="text">
         <h3>{post.title}</h3>
         <p>{post.excerpt}</p>
-      </SPostText>
-    </SPost>
+        <a href={`#${post.permalink}`}>Link</a>
+      </PostTextStyled>
+    </PostStyled>
   )
 }
