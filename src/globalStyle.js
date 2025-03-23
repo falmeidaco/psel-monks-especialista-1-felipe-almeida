@@ -1,9 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-
   :root {
-    --size-width: 1366px;
+    --max-site-width: 1366px;
     --header-height: 80px;
     --color-dark: #2D2D2D;
     --color-light: #EAE8E4;
@@ -36,8 +35,28 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   #root {
-    max-width: var(--size-width);
     margin: 0 auto;
+
+    & > section {
+      margin-top:2.5rem;
+      margin-bottom:4rem;
+    }
+
+    & > section:first-of-type {
+      margin-top:0;
+    }
+
+    & > section:last-of-type {
+      margin-bottom:0;
+    }
+  }
+
+  .max-width {
+    margin-left:auto;
+    margin-right:auto;
+    max-width: var(--max-site-width);
+    padding-left:3rem;
+    padding-right:3rem;
   }
 
   #site-sprites {
@@ -47,6 +66,26 @@ export const GlobalStyle = createGlobalStyle`
   @media (max-width: 768px) {
     :root {
       --content-margin: 1rem;
+    }
+
+    #root {
+      & > section {
+        margin-top:2.rem;
+        margin-bottom:2.5rem;
+      }
+
+      & > section:first-of-type {
+        margin-top:0;
+      }
+
+      & > section:last-of-type {
+        margin-bottom:0;
+      }
+      
+      .max-width {
+        padding-left:1rem;
+        padding-right:1rem;
+      }
     }
   }
 `;

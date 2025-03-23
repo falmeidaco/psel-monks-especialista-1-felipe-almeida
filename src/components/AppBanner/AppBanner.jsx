@@ -65,6 +65,7 @@ export const AppBannerStyled = styled.div`
 
 export default function AppBanner() {
   return (
+    <div className='max-width'>
     <AppBannerStyled as="section">
       <div className="text">
         <h2 className="heading">Lorem ipsum dolor sit amet consectetur</h2>
@@ -79,5 +80,6 @@ export default function AppBanner() {
         </a>
       </div>
     </AppBannerStyled>
+    </div>
   )
 }

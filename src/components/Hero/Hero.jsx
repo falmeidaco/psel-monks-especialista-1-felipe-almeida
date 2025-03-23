@@ -72,7 +72,7 @@ export const SImage = styled.img`
 
 export default function Hero() {
   return (
-    <SSection id="hero">
+    <SSection id="hero" className="max-width">
       <SDivCopy>
         <SDivCopyContent>
           <h1>Lorem ipsum dolor sit amet consectetur</h1>

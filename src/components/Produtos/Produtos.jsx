@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import api from "../../services/api";
 import Produto from "./Produto";
 import styled from "styled-components";
+import Loading from "../misc/Loading";
 
 const ProdutosStyled = styled.div`
   display:flex;
@@ -101,11 +102,11 @@ export default function Produtos({ term }) {
   }, [])
 
   if (posts === null) {
-    return <p>Carregando...</p>;
+    return  <Loading />
   }
 
   return (
-    <ProdutosStyled as="section">
+    <ProdutosStyled as="section" className='max-width'>
       <h2 className="title">{title}</h2>
       <div className="tags">
         {tags.map((tag, index) => (

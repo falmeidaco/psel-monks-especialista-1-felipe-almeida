@@ -4,9 +4,12 @@ import Form from "./Form"
 
 const ContatoStyled = styled.div`
   background-color: var(--color-dark);
-  display:flex;
-  gap:2.5rem;
-  padding: 6rem 3rem;
+
+  & > div {  
+    display:flex;
+    gap:2.5rem;
+    padding: 6rem 3rem;
+  }
 
   .media {
     align-content: center;
@@ -18,18 +21,22 @@ const ContatoStyled = styled.div`
   }
 
   @media (max-width: 768px) {
-    flex-direction: column;
-    padding: 2rem 1.5rem;
+    & > div { 
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+    }
   }
 `;
 export default function Contato() {
   return (
-    <ContatoStyled as="footer">
-      <div className="media">
-        <img src={imgFooter} alt="Imagem" />
-      </div>
-      <div className="content-form">
-        <Form />
+    <ContatoStyled as="section">
+      <div className='max-width'>
+        <div className="media">
+          <img src={imgFooter} alt="Imagem" />
+        </div>
+        <div className="content-form">
+          <Form />
+        </div>
       </div>
     </ContatoStyled>
   )

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import Destaque from './Destaque'
+import Loading from '../misc/Loading'
 import styled from "styled-components"
 
 
@@ -84,11 +85,11 @@ export default function PostListFeature({ term }) {
   }, [])
 
   if (posts === null) {
-    return <p>Carregando...</p>;
+    return  <Loading />;
   }
 
   return (
-    <DestaquesStyled>
+    <DestaquesStyled as="section" className='max-width'>
       <div className='pinterest-style'>
         <div className='heading'>
           <h3 className="title">{title}</h3>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import Post from './Post'
+import Loading from '../misc/Loading'
 import styled from "styled-components"
 
 const PostsStyled = styled.div`
@@ -25,7 +26,7 @@ const PostsStyled = styled.div`
 
   .post-list {
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
     gap:1.5rem;
   }
 
@@ -64,11 +65,11 @@ export default function PostList({ term }) {
   }, []);
 
   if (posts === null) {
-    return <p>Carregando...</p>;
+    return  <Loading />
   }
 
   return (
-    <PostsStyled as="section">
+    <PostsStyled as="section" className='max-width'>
       <div className="heading">
         <h2 className='title'>{title}</h2>
         <p className='description'>{description}</p>
