@@ -4,22 +4,25 @@ import Produto from "./Produto";
 import styled from "styled-components";
 
 const ProdutosStyled = styled.div`
-  margin: auto var(--content-margin);
   display:flex;
   flex-direction: column;
   gap: 2rem;
+
   & > .title {
     font-weight: 400;
     font-size: 2.5rem;
+    
     @media (max-width: 768px) {
       font-size: 1.5rem;
     }
   }
+
   .tags {
     display:flex;
     flex-wrap:wrap;
     gap: 1.5rem;
     justify-content: center;
+
     a {
       flex-shrink:0;
       padding: .5rem 2.5rem;
@@ -30,19 +33,23 @@ const ProdutosStyled = styled.div`
       font-size:1.2rem;
       border:1px solid #7D26C9;
       border-radius:2rem;
+
       @media (max-width: 768px) {
         font-size: 1rem;
         padding: .5rem 1.5rem;
       }
     }
+
     @media (max-width: 768px) {
       gap: 1rem;
     }
   }
+
   .post-list {
     display:grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+
     @media (max-width: 768px) {
       gap: 1rem;
     }
