@@ -11,13 +11,29 @@ const ProdutoStyled = styled.div`
   flex-direction: column;
   gap: 1rem;
   align-items: start;
+
   .heading {
-    font-size:1.5rem;
-    font-weight:400;
+    display:flex;
+    flex-direction: column;
+    gap: .5rem;
+
+    .title {
+      font-size:1.5rem;
+      font-weight:400;
+  
+      @media (max-width: 768px) {
+        font-size: 1.2rem;
+      }
+    }
+
+    .description {
+      font-size: 1.2rem;
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
+    }
   }
-  p {
-    font-size: 1.2rem;
-  }
+
   a {
     margin:0 auto;
     display:inline-block;
@@ -32,8 +48,10 @@ const ProdutoStyled = styled.div`
 export default function Post({ post }) {
   return (
     <ProdutoStyled>
-      <h3 className="heading">{post.title}</h3>
-      <p>{post.excerpt}</p>
+      <div className="heading">
+        <h3 className="title">{post.title}</h3>
+        <p className="description">{post.excerpt}</p>
+      </div>
       <a href={`#${post.permalink}`}>Link</a>
     </ProdutoStyled>
   )

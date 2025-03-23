@@ -8,9 +8,12 @@ const ProdutosStyled = styled.div`
   display:flex;
   flex-direction: column;
   gap: 2rem;
-  & > .heading {
+  & > .title {
     font-weight: 400;
     font-size: 2.5rem;
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
   }
   .tags {
     display:flex;
@@ -27,12 +30,22 @@ const ProdutosStyled = styled.div`
       font-size:1.2rem;
       border:1px solid #7D26C9;
       border-radius:2rem;
+      @media (max-width: 768px) {
+        font-size: 1rem;
+        padding: .5rem 1.5rem;
+      }
+    }
+    @media (max-width: 768px) {
+      gap: 1rem;
     }
   }
   .post-list {
     display:grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
+    @media (max-width: 768px) {
+      gap: 1rem;
+    }
   }
 `;
 
@@ -67,7 +80,7 @@ export default function Produtos({ term }) {
 
   return (
     <ProdutosStyled as="section">
-      <h2 className="heading">{title}</h2>
+      <h2 className="title">{title}</h2>
       <div className="tags">
         {tags.map((tag, index) => (
           <a href={`#${tag.slug}`} key={index}>{tag.name}</a>
