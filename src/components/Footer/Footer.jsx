@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
+import Sprites from "../misc/Sprites";
 import styled from "styled-components";
 
 const FooterStyled = styled.div`
@@ -39,6 +40,9 @@ export default function Footer() {
 
   return (
     <FooterStyled as="footer">
+      <div>
+        <Sprites id="svg-instagram" />
+      </div>
       <p>Footer</p>
       <div className="links">
         {menuItens.map((item, index) => (
