@@ -1,5 +1,6 @@
 import monkLogo from '../../assets/monks.svg'
 import styled from "styled-components";
+import Sprites from '../misc/Sprites';
 
 export const SHeader = styled.header`
   position:absolute;
@@ -43,13 +44,19 @@ export const SHeader = styled.header`
       display: none;
     }
   }
+  svg {
+    max-width:140px;
+    height:auto;
+  }
 `;
 
 export default function Header() {
   return (
     <SHeader>
       <div>
-        <img src={monkLogo} alt="Monk Logo" title='Monk Agencia' />
+        <a href="#">
+          <Sprites id="svg-monks" />
+        </a>
       </div>
       <nav>
         <ul>
