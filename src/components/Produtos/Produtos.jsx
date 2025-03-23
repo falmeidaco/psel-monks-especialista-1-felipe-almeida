@@ -11,7 +11,7 @@ const ProdutosStyled = styled.div`
   & > .title {
     font-weight: 400;
     font-size: 2.5rem;
-    
+
     @media (max-width: 768px) {
       font-size: 1.5rem;
     }
@@ -28,10 +28,10 @@ const ProdutosStyled = styled.div`
       padding: .5rem 2.5rem;
       display:block;
       background-color:#DFDCD5;
-      color:#7D26C9;
+      color: var(--color-purple);
       font-weight:500;
       font-size:1.2rem;
-      border:1px solid #7D26C9;
+      border:1px solid var(--color-purple);
       border-radius:2rem;
 
       @media (max-width: 768px) {

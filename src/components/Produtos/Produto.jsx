@@ -4,9 +4,9 @@ import styled, { css } from "styled-components";
 const ProdutoStyled = styled.div`
   background-color:white;
   padding: 1.5rem;
-  border:2px solid #DFBBFE;
+  border:2px solid var(--color-purple-light);
   border-radius: 1rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   display:flex;
   flex-direction: column;
   gap: 1rem;
@@ -38,7 +38,7 @@ const ProdutoStyled = styled.div`
     margin:0 auto;
     display:inline-block;
     padding: .5rem 2.5rem;
-    background-color:#DFBBFE;
+    background-color: var(--color-purple-light);
     border-radius:.3rem;
     font-weight:500;
   }

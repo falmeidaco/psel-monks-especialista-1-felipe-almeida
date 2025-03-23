@@ -7,6 +7,9 @@ export const GlobalStyle = createGlobalStyle`
     --header-height: 80px;
     --color-dark: #2D2D2D;
     --color-light: #EAE8E4;
+    --color-purple: #7D26C9;
+    --color-purple-light: #DFBBFE;
+    --color-purple-dark: #3C0C60;
     --content-margin: 3rem;
   }
 

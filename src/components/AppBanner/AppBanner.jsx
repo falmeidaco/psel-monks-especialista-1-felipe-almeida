@@ -3,7 +3,6 @@ import imgAppStore from "/button-app-store.png";
 import imgPlayStore from "/button-play-store.png";
 
 export const AppBannerStyled = styled.div`
-  margin: auto var(--content-margin);
   background-color: #3C0C60;
   color: var(--color-light);
   border-radius:24px;
@@ -11,6 +10,7 @@ export const AppBannerStyled = styled.div`
   display:flex;
   gap:2rem;
   align-items: center;
+
   .text {
     flex-grow: 1;
     display:flex;
@@ -24,6 +24,7 @@ export const AppBannerStyled = styled.div`
       font-size: 1.5rem;
     }
   }
+
   .buttons {
     flex-shrink: 0;
     flex-basis: 200px;
@@ -35,21 +36,26 @@ export const AppBannerStyled = styled.div`
       width:100%;
     }
   }
+
   @media (max-width: 768px) {
     flex-direction: column;
     gap:2.5rem;
     padding: 1.5rem;
     align-items: stretch;
+
     .text {
       .heading {
         font-size: 1.5rem;
       }
+
       p {
         font-size: 1rem;
       }
     }
+      
     .buttons {
       flex-basis: unset;
+      
       img {
         border-radius: 15px;
       }
