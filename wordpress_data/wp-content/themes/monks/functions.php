@@ -19,8 +19,52 @@ function monks_setup_theme()
 
 add_action('after_setup_theme', 'monks_setup_theme');
 
-/* API para expor os posts */
-function monks_api_custom_get_posts_by_term($request)
+/* API para retornar as tags usadas nos posts com uma categoria específica */
+function monks_api_get_tags_by_term($request)
+{
+  global $wpdb;
+  $term_slug = $request->get_param('term');
+
+  // Obtém o ID da categoria pelo slug
+  $term = get_term_by('slug', $term_slug, 'category');
+
+  if (!$term) {
+    return new WP_Error('categoria_nao_encontrada', 'Categoria não encontrada', ['status' => 404]);
+  }
+
+  $category_id = $term->term_id;
+
+  // Consulta SQL para obter as tags usadas nos posts da categoria
+  $query = $wpdb->prepare("
+      SELECT DISTINCT t.term_id, t.name, t.slug, tt.count 
+        FROM {$wpdb->terms} t
+        INNER JOIN {$wpdb->term_taxonomy} tt ON t.term_id = tt.term_id
+        INNER JOIN {$wpdb->term_relationships} tr_tag ON tt.term_taxonomy_id = tr_tag.term_taxonomy_id
+        INNER JOIN {$wpdb->posts} p ON tr_tag.object_id = p.ID
+        INNER JOIN {$wpdb->term_relationships} tr_cat ON p.ID = tr_cat.object_id
+        INNER JOIN {$wpdb->term_taxonomy} tt_cat ON tr_cat.term_taxonomy_id = tt_cat.term_taxonomy_id
+        WHERE tt_cat.taxonomy = 'category' AND tt_cat.term_id = %d
+        AND tt.taxonomy = 'post_tag'
+        AND p.post_status = 'publish'
+  ", $category_id);
+
+  $tags = $wpdb->get_results($query);
+
+  // Formata a resposta
+  $tag_list = array_map(function ($tag) {
+    return [
+      'id'    => intval($tag->term_id),
+      'name'  => $tag->name,
+      'slug'  => $tag->slug,
+      'count' => intval($tag->count),
+    ];
+  }, $tags);
+
+  return rest_ensure_response(['tags' => $tag_list]);
+}
+
+/* API para retornar os posts apenas com os dados usados no frontend */
+function monks_api_get_posts_by_term($request)
 {
 
   $term_slug = $request->get_param('term');
@@ -81,7 +125,21 @@ function monks_register_api_routes()
 {
   register_rest_route('custom/v1', '/posts-by-term', array(
     'methods'  => 'GET',
-    'callback' => 'monks_api_custom_get_posts_by_term',
+    'callback' => 'monks_api_get_posts_by_term',
+    'args'     => [
+      'term' => [
+        'required' => true,
+        'validate_callback' => function ($param) {
+          return !empty($param) && is_string($param);
+        }
+      ]
+    ],
+    'permission_callback' => '__return_true',
+  ));
+
+  register_rest_route('custom/v1', '/tags-by-term', array(
+    'methods'  => 'GET',
+    'callback' => 'monks_api_get_tags_by_term',
     'args'     => [
       'term' => [
         'required' => true,
