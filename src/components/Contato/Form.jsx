@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import api from "../../services/api"
 import styled from "styled-components"
 
 const MESSAGE_MAX_LENGTH = 500;
-
 
 const FormStyled = styled.div`
   background-color: var(--color-light);
@@ -28,6 +27,16 @@ const FormStyled = styled.div`
     .text-required {
       font-size: 1rem;
     }
+  }
+
+  .message-error {
+    color:red;
+    font-weight: 400;
+  }
+
+  .message-success {
+    color:green;
+    font-weight: 400;
   }
 
   fieldset {
@@ -156,6 +165,10 @@ const FormChallengeStyled = styled.div`
 
 export default function Form() {
 
+  const [message, setMessage] = useState({
+    type: "error",
+    text: "",
+  })
   const [submiting, setSubmiting] = useState(false)
   const [errors, setErrors] = useState({})
   const [values, setValues] = useState({
@@ -225,10 +238,14 @@ export default function Form() {
     return result
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (validateFields(["name", "phone", "email", "message"])) {
       setSubmiting(true)
+      setMessage({
+        type:"none",
+        text:""
+      });
       try {
         const response = await api.post('/new-formsubmission', values, {
           headers: {
@@ -236,14 +253,29 @@ export default function Form() {
             'X-Form-Token': 'monks2025'
           }
         });
-        console.log(response.data);
+        setValues({
+          name: '',
+          phone: '',
+          email: '',
+          message: '',
+        })
+        setMessage({
+          type:"success",
+          text:"Formulário enviado com sucesso!"
+        });
       } catch (error) {
-        console.error("Erro na submissão do formulário: ", error);
+        setMessage({
+          type:"error",
+          text:"Erro na submissão do formulário. Tente novamente mais tarde."
+        });
       } finally {
-        setSubmiting(false);
+        setSubmiting(false)
       }
     } else {
-      console.log('Os campos não estão corretamente preenchidos: ', values)
+      setMessage({
+        type:"error",
+        text:"Preencha corretamente os campos."
+      });
     }
   }
 
@@ -253,21 +285,21 @@ export default function Form() {
       <div className="heading">
         <h2 className="title">Lorem ipsum dolor sit amet </h2>
         <p className="text">Lorem ipsum dolor sit amet consectetur</p>
-        <p className="text-required">* Lorem ipsum dolor sit amet consectetur</p>
+        <p className="text-required">* Campos obrigatórios</p>
       </div>
-
+      <p className={`message-${message.type}`}>{message.text}</p>
       <fieldset className="form-fields">
         <p>
-          <InputStyled onChange={handleChange} required placeholder="Nome" type="text" name="name" className={errors.name ? "error" : ""} />
+          <InputStyled value={values.name} onChange={handleChange} required placeholder="Nome" type="text" name="name" className={errors.name ? "error" : ""} />
         </p>
         <p>
-          <InputStyled onChange={handleChange} maxLength="11" required placeholder="Telefone" type="phone" name="phone" className={errors.phone ? "error" : ""} />
+          <InputStyled value={values.phone} onChange={handleChange} maxLength="11" required placeholder="Telefone" type="phone" name="phone" className={errors.phone ? "error" : ""} />
         </p>
         <p>
-          <InputStyled onChange={handleChange} required placeholder="E-mail" type="email" name="email" className={errors.email ? "error" : ""} />
+          <InputStyled value={values.email} onChange={handleChange} required placeholder="E-mail" type="email" name="email" className={errors.email ? "error" : ""} />
         </p>
         <p>
-          <InputStyled onChange={handleChange} maxLength={MESSAGE_MAX_LENGTH} required placeholder="Mensagem" type="text" name="message" className={errors.message ? "error" : ""} />
+          <InputStyled value={values.message} onChange={handleChange} maxLength={MESSAGE_MAX_LENGTH} required placeholder="Mensagem" type="text" name="message" className={errors.message ? "error" : ""} />
         </p>
       </fieldset>
 
