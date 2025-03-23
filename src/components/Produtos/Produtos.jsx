@@ -54,6 +54,25 @@ const ProdutosStyled = styled.div`
       gap: 1rem;
     }
   }
+  
+  @media (max-width: 768px) {
+    & > .title {
+      font-size: 1.5rem;
+    }
+
+    .tags {
+      gap: 1rem;
+
+      a {
+        font-size: 1rem;
+        padding: .5rem 1.5rem;
+      }
+    }
+
+    .post-list {
+      gap: 1rem;
+    }
+  }
 `;
 
 export default function Produtos({ term }) {

@@ -7,31 +7,40 @@ const PostsStyled = styled.div`
   display:flex;
   flex-direction: column;
   gap: 2.5rem;
+  
   & > .heading {
     display:flex;
     flex-direction: column;
     gap: .5rem;
+
     & > .title {
       font-weight: 400;
       font-size:2.5rem;
-      @media (max-width: 768px) {
-        font-size: 1.5rem;
-      }
     }
+
     & > p {
       font-size: 1.5rem;
-      @media (max-width: 768px) {
-        font-size: 1rem;
-      }
     }
   }
+
   .post-list {
     display:grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap:1.5rem;
   }
+
   @media (max-width: 768px) {
     gap: 1.5rem;
+
+    & > .heading {
+      & > .title {
+        font-size: 1.5rem;
+      }
+
+      & > p {
+        font-size: 1rem;
+      }
+    }
   }
 `;
 

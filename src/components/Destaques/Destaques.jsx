@@ -16,21 +16,11 @@ const DestaquesStyled = styled.div`
         font-weight: 400;
         font-size: 2.5rem;
         margin-bottom:.5rem;
-        
-        @media (max-width: 768px) {
-          margin-bottom:.5rem;
-          font-size: 1.5rem;
-        }
       }
 
       .description {
         font-size: 1.5rem;
         line-height: 1.5;
-
-        @media (max-width: 768px) {
-          font-size: 1rem;
-          margin-bottom:1rem;
-        }
       }
     }
 
@@ -51,11 +41,25 @@ const DestaquesStyled = styled.div`
       grid-column: 2 / 3;
       grid-row: 3 / 5;
     }
-    
-    @media (max-width: 768px) {
+  }
+
+  @media (max-width: 768px) {
+    .pinterest-style {
       gap: 1rem;
       display:flex;
       flex-direction:column;
+
+      & > .heading {
+        .title {
+          margin-bottom:.5rem;
+          font-size: 1.5rem;
+        }
+
+        .description {
+          font-size: 1rem;
+          margin-bottom:1rem;
+        }
+      }
     }
   }
 `;

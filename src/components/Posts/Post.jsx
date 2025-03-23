@@ -9,25 +9,32 @@ const PostStyled = styled.a`
   flex-direction:column;
   gap:.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
   .media {
     img {
       border-radius: 8px;
       width: 100%;
     }
   }
+
   .title {
     font-size: 1.5rem;
     font-weight: 400;
     margin-bottom: .5rem;
-    @media (max-width: 768px) {
-      font-size: 1.2rem;
-    }
   }
+
   .description {
     font-size: 1.2rem;
     margin: 0;
     font-weight: 300;
-    @media (max-width: 768px) {
+  }
+
+  @media (max-width: 768px) {
+    .title {
+      font-size: 1.2rem;
+    }
+
+    .description {
       font-size: 1rem;
     }
   }

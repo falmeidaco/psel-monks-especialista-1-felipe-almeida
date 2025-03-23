@@ -20,17 +20,10 @@ const ProdutoStyled = styled.div`
     .title {
       font-size:1.5rem;
       font-weight:400;
-  
-      @media (max-width: 768px) {
-        font-size: 1.2rem;
-      }
     }
 
     .description {
       font-size: 1.2rem;
-      @media (max-width: 768px) {
-        font-size: 1rem;
-      }
     }
   }
 
@@ -41,6 +34,18 @@ const ProdutoStyled = styled.div`
     background-color: var(--color-purple-light);
     border-radius:.3rem;
     font-weight:500;
+  }
+
+  @media (max-width: 768px) {
+    .heading {
+      .title {
+        font-size: 1.2rem;
+      }
+        
+      .description {
+        font-size: 1rem;
+      }
+    }
   }
 `;
 
