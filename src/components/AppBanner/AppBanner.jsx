@@ -1,6 +1,6 @@
 import { AppBannerStyled } from "./AppBanner.style";
-import imgAppStore from "../../assets/button-app-store.png";
-import imgPlayStore from "../../assets/button-play-store.png";
+import imgAppStore from "/button-app-store.png";
+import imgPlayStore from "/button-play-store.png";
 
 export default function AppBanner() {
   return (
