@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 import api from "../../services/api"
 import styled from "styled-components"
-import Input from "./Input"
-import Challenge from "./Challenge"
+import Input from "../misc/Input"
+import Challenge from "../misc/Challenge"
 
 const MESSAGE_MAX_LENGTH = 500;
 
