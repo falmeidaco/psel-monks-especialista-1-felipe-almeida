@@ -3,38 +3,36 @@ import api from '../../services/api';
 import Post from './Post'
 import styled from "styled-components"
 
-
-const SSection = styled.section`
-  margin:0 3rem 3rem;
-  @media (max-width: 768px) {
-    margin:auto 1rem;
+const PostsStyled = styled.div`
+  display:flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  & > .heading {
+    display:flex;
+    flex-direction: column;
+    gap: .5rem;
+    & > .title {
+      font-weight: 400;
+      font-size:2.5rem;
+      @media (max-width: 768px) {
+        font-size: 1.5rem;
+      }
+    }
+    & > p {
+      font-size: 1.5rem;
+      @media (max-width: 768px) {
+        font-size: 1rem;
+      }
+    }
   }
-`;
-
-const SHeading = styled.h2`
-  font-weight: 400;
-  margin-bottom:1rem;
-  font-size:2.5rem;
-  @media (max-width: 768px) {
-    margin-bottom:.5rem;
-    font-size: 1.5rem;
+  .post-list {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap:1.5rem;
   }
-`;
-
-const SText = styled.p`
-  font-size: 1.5rem;
-  font-weight: 200;
-  line-height: 1.5;
-  margin-bottom:2rem;
   @media (max-width: 768px) {
-    font-size: 1rem;
+    gap: 1.5rem;
   }
-`;
-
-const SList = styled.div`
-  display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap:2rem;
 `;
 
 export default function PostList({ term }) {
@@ -61,14 +59,16 @@ export default function PostList({ term }) {
   }
 
   return (
-    <SSection>
-      <SHeading>{title}</SHeading>
-      <SText>{description}</SText>
-      <SList>
+    <PostsStyled as="section">
+      <div className="heading">
+        <h2 className='title'>{title}</h2>
+        <p className='description'>{description}</p>
+      </div>
+      <div className="post-list">
         {posts.map((post) => (
           <Post key={post.id} post={post} />
         ))}
-      </SList>
-    </SSection>
+      </div>
+    </PostsStyled>
   );
 }
