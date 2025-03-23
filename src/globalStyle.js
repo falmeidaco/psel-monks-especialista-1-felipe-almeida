@@ -3,9 +3,11 @@ import { createGlobalStyle } from "styled-components";
 export const GlobalStyle = createGlobalStyle`
 
   :root {
+    --size-width: 1366px;
     --header-height: 80px;
     --color-dark: #2D2D2D;
     --color-light: #EAE8E4;
+    --content-margin: 3rem;
   }
 
   * {
@@ -14,21 +16,30 @@ export const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
   
-  a, a:visited {
-    color: var(--color-dark);
-    text-decoration:none;
-  }
+  
 
   html, body {
     min-height: 100vh;
     background-color: var(--color-light);
     font-family: "Inter", sans-serif;
+    font-weight: 200;
     font-optical-sizing: auto;
     font-style: normal;
   }
 
+  a, a:visited {
+    color: var(--color-dark);
+    text-decoration:none;
+  }
+
   #root {
-    max-width:1600px;
+    max-width: var(--size-width);
     margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    :root {
+      --content-margin: 1rem;
+    }
   }
 `;
