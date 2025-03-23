@@ -1,6 +1,8 @@
-import { useState, useEffect, use } from "react"
+import { useState, useEffect, useRef } from "react"
 import api from "../../services/api"
 import styled from "styled-components"
+import Input from "./Input"
+import Challenge from "./Challenge"
 
 const MESSAGE_MAX_LENGTH = 500;
 
@@ -165,6 +167,7 @@ const FormChallengeStyled = styled.div`
 
 export default function Form() {
 
+  const challengeRef = useRef();
   const [challengeNumber, setChallengeNumber] = useState({ n1: 0, n2: 0 });
   const [message, setMessage] = useState({
     type: "error",
@@ -176,8 +179,7 @@ export default function Form() {
     name: '',
     phone: '',
     email: '',
-    message: '',
-    challenge: ''
+    message: ''
   });
 
   useEffect(() => {
@@ -199,9 +201,7 @@ export default function Form() {
   const handleChange = (e) => {
     const { name, value } = e.target
     setValues({ ...values, [name]: value })
-    if (name === "challenge") {
-      return
-    } else if (name === "email") {
+    if (name === "email") {
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         setErrors({
           ...errors,
@@ -258,18 +258,21 @@ export default function Form() {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    // Verifica se há erro nos campos
     if (validateFields(["name", "phone", "email", "message"]) ) {
-      if (!validateChallenge()) {
-        challengeFn();
+
+      // Valida Challenge
+      if (!challengeRef.current.validate()) {
+        challengeRef.current.reset()
+        challengeRef.current.refresh()
         setMessage({
           type:"error",
           text:"Resposta incorreta."
         });
-        setValues(prev => ({...prev, challenge: ''}));
-        setErrors(prev => ({...prev, challenge: true}));
         return
       }
 
+      // Inicia o estado de submissão sendo enviada
       setSubmiting(true)
       setMessage({
         type:"none",
@@ -277,29 +280,35 @@ export default function Form() {
       });
 
       try {
-        const response = await api.post('/new-formsubmission', values, {
+        await api.post('/new-formsubmission', values, {
           headers: {
             'Content-Type': 'application/json',
             'X-Form-Token': import.meta.env.VITE_API_POST_TOKEN
           }
         });
+        // Reseta valores do formulário
         setValues({
           name: '',
           phone: '',
           email: '',
           message: '',
-          challenge: '',
         })
+        // Reseta campo do challenge
+        challengeRef.current.reset();
+        challengeRef.current.refresh();
+        // Define mensagem de sucesso
         setMessage({
           type:"success",
           text:"Formulário enviado com sucesso!"
         });
       } catch (error) {
+        // Define mensagem de erro
         setMessage({
           type:"error",
           text:"Erro na submissão do formulário. Tente novamente mais tarde."
         });
       } finally {
+        // Reseta status da requisição
         setSubmiting(false)
       }
     } else {
@@ -321,33 +330,20 @@ export default function Form() {
       <p className={`message-${message.type}`}>{message.text}</p>
       <fieldset className="form-fields">
         <p>
-          <InputStyled value={values.name} onChange={handleChange} required placeholder="Nome" type="text" name="name" className={errors.name ? "error" : ""} />
+          <Input value={values.name} onChange={handleChange} required placeholder="Nome" type="text" name="name" className={errors.name ? "error" : ""} />
         </p>
         <p>
-          <InputStyled value={values.phone} onChange={handleChange} maxLength="11" required placeholder="Telefone" type="phone" name="phone" className={errors.phone ? "error" : ""} />
+          <Input value={values.phone} onChange={handleChange} maxLength="11" required placeholder="Telefone" type="phone" name="phone" className={errors.phone ? "error" : ""} />
         </p>
         <p>
-          <InputStyled value={values.email} onChange={handleChange} required placeholder="E-mail" type="email" name="email" className={errors.email ? "error" : ""} />
+          <Input value={values.email} onChange={handleChange} required placeholder="E-mail" type="email" name="email" className={errors.email ? "error" : ""} />
         </p>
         <p>
-          <InputStyled value={values.message} onChange={handleChange} maxLength={MESSAGE_MAX_LENGTH} required placeholder="Mensagem" type="text" name="message" className={errors.message ? "error" : ""} />
+          <Input value={values.message} onChange={handleChange} maxLength={MESSAGE_MAX_LENGTH} required placeholder="Mensagem" type="text" name="message" className={errors.message ? "error" : ""} />
         </p>
       </fieldset>
 
-      <FormChallengeStyled>
-        <div className="text">
-          Verificação de segurança
-        </div>
-        <div className="challenge-n">
-          <span>{challengeNumber.n1}</span> + <span>{challengeNumber.n2}</span>
-        </div>
-        <div>
-          =
-        </div>
-        <div className="challenge-answer">
-          <InputStyled className={errors.challenge ? "error" : ""} name="challenge" onChange={handleChange} value={values.challenge || ''} required maxLength="2" type="number" placeholder="Resposta" />
-        </div>
-      </FormChallengeStyled>
+      <Challenge ref={challengeRef} />
 
       <div className="form-submit">
         <button disabled={submiting} type="submit">{!submiting ? "Enviar" : "Enviando..."}</button>
