@@ -1,7 +1,7 @@
 import Header from './components/Header/Header'
 import Hero from './components/Hero/Hero'
 import PostList from './components/Post/PostList'
-import PostListFeature from './components/Post/PostListFeature'
+import PostListFeature from './components/Destaques/Destaques'
 import AppBanner from './components/AppBanner/AppBanner'
 import Produtos from './components/Produtos/Produtos'
 
