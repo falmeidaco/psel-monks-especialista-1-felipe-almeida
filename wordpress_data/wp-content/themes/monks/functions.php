@@ -6,7 +6,7 @@ function monks_setup_theme()
   add_theme_support('post-thumbnails');
 
   // Registra os menus
-  register_nav_menus( array(
+  register_nav_menus(array(
     'primary' => 'Primary Navigation',
     'secondary' => 'Secondary Navigation',
     'social' => 'Social Links'
@@ -14,6 +14,59 @@ function monks_setup_theme()
 }
 
 add_action('after_setup_theme', 'monks_setup_theme');
+
+function monks_setup_cp_formsubmissions()
+{
+  $labels = array(
+    'name'               => 'Submissões de Formulário',
+    'singular_name'      => 'Submissão',
+    'menu_name'          => 'Formulários',
+    'name_admin_bar'     => 'Submissão',
+    'add_new'            => 'Adicionar Nova',
+    'add_new_item'       => 'Adicionar Nova Submissão',
+    'new_item'           => 'Nova Submissão',
+    'edit_item'          => 'Editar Submissão',
+    'view_item'          => 'Ver Submissão',
+    'all_items'          => 'Todas as Submissões',
+    'search_items'       => 'Buscar Submissões',
+    'not_found'          => 'Nenhuma Submissão encontrada',
+    'not_found_in_trash' => 'Nenhuma Submissão encontrada na lixeira'
+  );
+
+  $args = array(
+    'labels'             => $labels,
+    'public'             => false, // Oculta do front-end
+    'show_ui'            => true, // Exibe no admin
+    'show_in_menu'       => true,
+    'query_var'          => false,
+    'capability_type'    => 'post',
+    'has_archive'        => false,
+    'hierarchical'       => false,
+    'menu_position'      => 20,
+    'menu_icon'          => 'dashicons-email', // Ícone do menu no admin
+    'supports'           => array('title', 'editor', 'custom-fields'),
+  );
+
+  register_post_type('formsubmission', $args);
+}
+
+add_action('init', 'monks_setup_cp_formsubmissions');
+
+// Remove o botão "Adicionar Novo" no menu e na barra superior
+function monks_remove_add_new_formsubmission()
+{
+  global $submenu;
+  unset($submenu['edit.php?post_type=formsubmission'][10]); // Remove do menu lateral
+}
+add_action('admin_menu', 'monks_remove_add_new_formsubmission');
+
+function monks_disable_new_formsubmission_button()
+{
+  if (get_current_screen()->post_type === 'formsubmission') {
+    echo '<style>.page-title-action { display: none !important; }</style>';
+  }
+}
+add_action('admin_head', 'monks_disable_new_formsubmission_button');
 
 /* API para retornar as tags usadas nos posts com uma categoria específica */
 function monks_api_get_tags_by_term($request)
@@ -116,13 +169,14 @@ function monks_api_get_posts_by_term($request)
   return rest_ensure_response($response);
 }
 
-function monks_get_menu_items( $request ) {
+function monks_get_menu_items($request)
+{
   $menu_slug = $request->get_param('menu');
 
   $menu = wp_get_nav_menu_object($menu_slug);
 
   if (!$menu) {
-      return new WP_Error('menu_nao_encontrado', 'Menu não encontrado', ['status' => 404]);
+    return new WP_Error('menu_nao_encontrado', 'Menu não encontrado', ['status' => 404]);
   }
 
   $menu_items = wp_get_nav_menu_items($menu->term_id);
@@ -130,19 +184,63 @@ function monks_get_menu_items( $request ) {
   $formatted_menu = [];
 
   foreach ($menu_items as $item) {
-      $formatted_menu[] = [
-          'id'    => $item->ID,
-          'title' => $item->title,
-          'url'   => $item->url,
-          'parent' => $item->menu_item_parent,
-          'order'  => $item->menu_order,
-          'type'   => $item->type, 
-          'classes' => implode(' ', $item->classes),
-          'target'  => $item->target ?: '_self',
-      ];
+    $formatted_menu[] = [
+      'id'    => $item->ID,
+      'title' => $item->title,
+      'url'   => $item->url,
+      'parent' => $item->menu_item_parent,
+      'order'  => $item->menu_order,
+      'type'   => $item->type,
+      'classes' => implode(' ', $item->classes),
+      'target'  => $item->target ?: '_self',
+    ];
   }
 
   return rest_ensure_response(['menu' => $formatted_menu]);
+}
+
+function monks_handle_formsubmission_register(WP_REST_Request $request)
+{
+  // Verifica o cabeçalho X-Form-Token
+  $token = $request->get_header('X-Form-Token');
+  if ($token !== 'monks2025') {
+    return new WP_Error('token_invalido', 'Acesso negado. Token inválido.', ['status' => 403]);
+  }
+
+  // Obtém os dados enviados no formulário
+  $name    = sanitize_text_field($request->get_param('name'));
+  $phone   = sanitize_text_field($request->get_param('phone'));
+  $email   = sanitize_email($request->get_param('email'));
+  $message = sanitize_textarea_field($request->get_param('message'));
+
+  // Verifica se os campos obrigatórios estão preenchidos
+  if (empty($name) || empty($email) || empty($phone) || empty($message)) {
+    return new WP_Error('campos_faltando', 'Nome, Telefone, E-mail e Mensagem são obrigatórios.', ['status' => 400]);
+  }
+
+  // Monta o conteúdo do post com os dados do formulário
+  $post_content = "<p><strong>Nome:</strong> $name</p>";
+  $post_content .= "<p><strong>Telefone:</strong> $phone</p>";
+  $post_content .= "<p><strong>E-mail:</strong> $email</p>";
+  $post_content .= "<p><strong>Mensagem:</strong><br>$message</p>";
+
+  // Cria um novo post do tipo formsubmission
+  $post_id = wp_insert_post([
+    'post_type'    => 'formsubmission',
+    'post_title'   => $name, // O título será o nome do usuário
+    'post_content' => $post_content,
+    'post_status'  => 'publish', // Define como publicado para aparecer no admin
+  ]);
+
+  // Verifica se o post foi criado com sucesso
+  if (is_wp_error($post_id)) {
+    return new WP_Error('erro_criacao', 'Erro ao salvar a submissão.', ['status' => 500]);
+  }
+
+  return rest_ensure_response([
+    'message' => 'Submissão recebida com sucesso!',
+    'id'      => $post_id,
+  ]);
 }
 
 // Registra o endpoint na API REST do WordPress
@@ -180,15 +278,27 @@ function monks_register_api_routes()
     'methods'  => 'GET',
     'callback' => 'monks_get_menu_items',
     'args'     => [
-        'menu' => [
-            'required' => true,
-            'validate_callback' => function($param) {
-                return !empty($param) && is_string($param);
-            }
-        ]
+      'menu' => [
+        'required' => true,
+        'validate_callback' => function ($param) {
+          return !empty($param) && is_string($param);
+        }
+      ]
     ],
     'permission_callback' => '__return_true',
-));
+  ));
+
+  register_rest_route('custom/v1', '/new-formsubmission', array(
+    'methods'             => 'POST',
+    'callback'            => 'monks_handle_formsubmission_register',
+    'permission_callback' => '__return_true',
+    'args'                => [
+      'name' => ['required' => true],
+      'phone' => ['required' => false],
+      'email' => ['required' => true],
+      'message' => ['required' => true],
+    ],
+  ));
 }
 
 add_action('rest_api_init', 'monks_register_api_routes');
