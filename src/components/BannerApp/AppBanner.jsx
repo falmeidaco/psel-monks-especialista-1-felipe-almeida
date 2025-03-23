@@ -2,7 +2,7 @@ import styled from "styled-components";
 import imgAppStore from "/button-app-store.png";
 import imgPlayStore from "/button-play-store.png";
 
-export const AppBannerStyled = styled.div`
+export const BannerAppStyled = styled.div`
   background-color: #3C0C60;
   color: var(--color-light);
   border-radius:24px;
@@ -63,10 +63,10 @@ export const AppBannerStyled = styled.div`
   }
 `;
 
-export default function AppBanner() {
+export default function BannerApp() {
   return (
     <div className='max-width'>
-    <AppBannerStyled as="section">
+    <BannerAppStyled as="section">
       <div className="text">
         <h2 className="heading">Lorem ipsum dolor sit amet consectetur</h2>
         <p>Lorem ipsum dolor sit amet consectetur. Semper orci adipiscing faucibus sit scelerisque quis commodo aenean viverra</p>
@@ -79,7 +79,7 @@ export default function AppBanner() {
           <img src={imgPlayStore} alt="Google Play" />
         </a>
       </div>
-    </AppBannerStyled>
+    </BannerAppStyled>
     </div>
   )
 }
