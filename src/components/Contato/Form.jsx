@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react"
 import styled from "styled-components"
+
 
 const FormStyled = styled.div`
   background-color: var(--color-light);
@@ -150,8 +152,42 @@ const FormChallengeStyled = styled.div`
 `
 
 export default function Form() {
+
+  const [formData, setFormData] = useState({
+    input1: '',
+    input2: '',
+    input3: '',
+    input4: '',
+  });
+  const [formError, setFormError] = useState({});
+
+  console.log(formData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
+  const validateForm = () => {
+    let validation = false;
+    for (const key in formData) {
+      if (!formData[key] || formData[key] === '') {
+        vali
+      }
+    }
+    return validation
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Campos do formulário', formData);
+  }
+
   return (
-    <FormStyled as="form" action="#">
+    <FormStyled onSubmit={handleSubmit} as="form" action="#">
 
       <div className="heading">
         <h2 className="title">Lorem ipsum dolor sit amet </h2>
@@ -161,16 +197,16 @@ export default function Form() {
 
       <fieldset className="form-fields">
         <p>
-          <InputStyled required placeholder="Campo 1" type="text" name="field1" />
+          <InputStyled onChange={handleChange} required placeholder="Campo 1" type="text" name="field1" />
         </p>
         <p>
-          <InputStyled required placeholder="Campo 2" type="text" name="field2" />
+          <InputStyled onChange={handleChange} required placeholder="Campo 2" type="text" name="field2" />
         </p>
         <p>
-          <InputStyled required placeholder="Campo 3" type="text" name="field3" />
+          <InputStyled onChange={handleChange} required placeholder="Campo 3" type="text" name="field3" />
         </p>
         <p>
-          <InputStyled required placeholder="Campo 4" type="text" name="field4" />
+          <InputStyled onChange={handleChange} required placeholder="Campo 4" type="text" name="field4" />
         </p>
       </fieldset>
 
