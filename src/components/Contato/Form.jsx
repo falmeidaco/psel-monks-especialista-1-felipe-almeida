@@ -83,16 +83,25 @@ const FormStyled = styled.div`
 
 const InputStyled = styled.input`
   width: 100%;
-  border:0;
+  border:2px solid white;
   padding: .4rem .8rem;
   font-size: 1.2rem;
   font-family: inherit;
   font-weight: 200;
   border-radius: .5rem;
 
+  &:focus {
+    outline:none;
+    border-color: var(--color-purple);
+  }
+
   &::placeholder {
     color: var(--color-dark);
     opacity: .5;
+  }
+
+  &.error {
+    border-color: red;
   }
   
   @media (max-width: 768px) {
@@ -152,16 +161,16 @@ export default function Form() {
 
       <fieldset className="form-fields">
         <p>
-          <InputStyled placeholder="Campo 1" type="text" name="field1" />
+          <InputStyled required placeholder="Campo 1" type="text" name="field1" />
         </p>
         <p>
-          <InputStyled placeholder="Campo 2" value="Texto inicial" type="text" name="field2" />
+          <InputStyled required placeholder="Campo 2" value="Texto inicial" type="text" name="field2" />
         </p>
         <p>
-          <InputStyled placeholder="Campo 3" type="text" name="field3" />
+          <InputStyled required placeholder="Campo 3" type="text" name="field3" />
         </p>
         <p>
-          <InputStyled placeholder="Campo 4" type="text" name="field4" />
+          <InputStyled required placeholder="Campo 4" type="text" name="field4" />
         </p>
       </fieldset>
 
