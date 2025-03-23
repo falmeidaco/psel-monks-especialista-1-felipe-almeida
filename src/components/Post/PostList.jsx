@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 
 const SSection = styled.section`
-  margin:auto 3rem;
+  margin:0 3rem 3rem;
   @media (max-width: 768px) {
     margin:auto 1rem;
   }
@@ -13,6 +13,7 @@ const SSection = styled.section`
 const SHeading = styled.h2`
   font-weight: 400;
   margin-bottom:1rem;
+  font-size:2.5rem;
   @media (max-width: 768px) {
     margin-bottom:.5rem;
     font-size: 1.5rem;
@@ -35,21 +36,31 @@ const SList = styled.div`
   gap:2rem;
 `;
 
-export default function PostList() {
+export default function PostList({ term }) {
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:8000/wp-json/custom/v1/posts-by-term?term=geral')
+    fetch(`http://localhost:8000/wp-json/custom/v1/posts-by-term?term=${term}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response;
+      })
       .then(response => response.json())
       .then(data => {
-          setTitle(data.name);
-          setDescription(data.description);
-          setPosts(data.posts)
-        }
-      );
+        setTitle(data.name);
+        setDescription(data.description);
+        setPosts(data.posts)
+      }
+      ).catch(error => {
+        setTitle('Conteúdo não disponível');
+        setPosts([]);
+      }
+    );
   }, []);
 
   return (
@@ -65,7 +76,6 @@ export default function PostList() {
           ))}
         </SList>
       }
-
     </SSection>
   );
 }

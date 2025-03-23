@@ -19,24 +19,6 @@ function monks_setup_theme()
 
 add_action('after_setup_theme', 'monks_setup_theme');
 
-function monks_custom_post_type_conteudo()
-{
-  register_post_type('conteudo', array(
-    'labels' => array(
-      'name' => 'Conteudos',
-      'singular_name' => 'Conteudo',
-    ),
-    'public' => true,
-    'has_archive' => true,
-    'menu_position' => 6,
-    'show_in_rest' => true, // Habilita Gutenberg
-    'supports' => array('title', 'editor',  'excerpt'),
-    'taxonomies' => array('post_tag'),
-  ));
-}
-
-add_action('init', 'monks_custom_post_type_conteudo');
-
 /* API para expor os posts */
 function monks_api_custom_get_posts_by_term($request)
 {

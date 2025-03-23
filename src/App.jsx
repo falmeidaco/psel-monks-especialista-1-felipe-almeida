@@ -8,7 +8,8 @@ function App() {
     <>
       <Header />
       <Hero />
-      <PostList />
+      <PostList term="geral" />
+      <PostList term="destaques" />
     </>
   )
 }
