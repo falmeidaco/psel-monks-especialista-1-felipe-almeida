@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react"
+import api from "../../services/api"
 import styled from "styled-components"
+
+const MESSAGE_MAX_LENGTH = 500;
 
 
 const FormStyled = styled.div`
@@ -153,37 +156,95 @@ const FormChallengeStyled = styled.div`
 
 export default function Form() {
 
-  const [formData, setFormData] = useState({
-    input1: '',
-    input2: '',
-    input3: '',
-    input4: '',
+  const [submiting, setSubmiting] = useState(false)
+  const [errors, setErrors] = useState({})
+  const [values, setValues] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    message: '',
   });
-  const [formError, setFormError] = useState({});
 
-  console.log(formData);
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData({
-      ...formData,
-      [name]: value
-    })
+    setValues({ ...values, [name]: value })
+
+    if (name === "email") {
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        setErrors({
+          ...errors,
+          [name]: null,
+        })
+      } else {
+        setErrors({
+          ...errors,
+          [name]: true,
+        })
+      }
+    } else if (name === "phone") {
+      if (/^\d{10,11}$/.test(value)) {
+        setErrors({
+          ...errors,
+          [name]: null,
+        })
+      } else {
+        setErrors({
+          ...errors,
+          [name]: true,
+        })
+      }
+    } else {
+      setErrors({
+        ...errors,
+        [name]: value.trim().length > 2 ? null : true,
+      })
+    }
   }
 
-  const validateForm = () => {
-    let validation = false;
-    for (const key in formData) {
-      if (!formData[key] || formData[key] === '') {
-        vali
+
+  const validateFields = (fields) => {
+    let result = false
+    let _errors = errors
+    for (let i = 0; i < fields.length; i++) {
+      if (fields[i] in errors) {
+        if (errors[fields[i]] === true) {
+          result = false
+          break
+        } else {
+          result = true
+        }
+      } else {
+        _errors[fields[i]] = true
       }
     }
-    return validation
+    setErrors({
+      ...errors,
+      _errors,
+    })
+    return result
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Campos do formulário', formData);
+  const handleSubmit = async(e) => {
+    e.preventDefault()
+    if (validateFields(["name", "phone", "email", "message"])) {
+      setSubmiting(true)
+      try {
+        const response = await api.post('/new-formsubmission', values, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Form-Token': 'monks2025'
+          }
+        });
+        console.log(response.data);
+      } catch (error) {
+        console.error("Erro na submissão do formulário: ", error);
+      } finally {
+        setSubmiting(false);
+      }
+    } else {
+      console.log('Os campos não estão corretamente preenchidos: ', values)
+    }
   }
 
   return (
@@ -197,16 +258,16 @@ export default function Form() {
 
       <fieldset className="form-fields">
         <p>
-          <InputStyled onChange={handleChange} required placeholder="Campo 1" type="text" name="field1" />
+          <InputStyled onChange={handleChange} required placeholder="Nome" type="text" name="name" className={errors.name ? "error" : ""} />
         </p>
         <p>
-          <InputStyled onChange={handleChange} required placeholder="Campo 2" type="text" name="field2" />
+          <InputStyled onChange={handleChange} maxLength="11" required placeholder="Telefone" type="phone" name="phone" className={errors.phone ? "error" : ""} />
         </p>
         <p>
-          <InputStyled onChange={handleChange} required placeholder="Campo 3" type="text" name="field3" />
+          <InputStyled onChange={handleChange} required placeholder="E-mail" type="email" name="email" className={errors.email ? "error" : ""} />
         </p>
         <p>
-          <InputStyled onChange={handleChange} required placeholder="Campo 4" type="text" name="field4" />
+          <InputStyled onChange={handleChange} maxLength={MESSAGE_MAX_LENGTH} required placeholder="Mensagem" type="text" name="message" className={errors.message ? "error" : ""} />
         </p>
       </fieldset>
 
@@ -226,7 +287,7 @@ export default function Form() {
       </FormChallengeStyled>
 
       <div className="form-submit">
-        <button type="submit">Submit</button>
+        <button disabled={submiting} type="submit">{!submiting ? "Enviar" : "Enviando..."}</button>
       </div>
     </FormStyled>
   )

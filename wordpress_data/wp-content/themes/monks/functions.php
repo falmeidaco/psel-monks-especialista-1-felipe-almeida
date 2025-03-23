@@ -35,16 +35,16 @@ function monks_setup_cp_formsubmissions()
 
   $args = array(
     'labels'             => $labels,
-    'public'             => false, // Oculta do front-end
-    'show_ui'            => true, // Exibe no admin
+    'public'             => false,
+    'show_ui'            => true,
     'show_in_menu'       => true,
     'query_var'          => false,
     'capability_type'    => 'post',
     'has_archive'        => false,
     'hierarchical'       => false,
     'menu_position'      => 20,
-    'menu_icon'          => 'dashicons-email', // Ícone do menu no admin
-    'supports'           => array('title', 'editor', 'custom-fields'),
+    'menu_icon'          => 'dashicons-email',
+    'supports'           => array('title', 'editor'),
   );
 
   register_post_type('formsubmission', $args);
@@ -56,7 +56,8 @@ add_action('init', 'monks_setup_cp_formsubmissions');
 function monks_remove_add_new_formsubmission()
 {
   global $submenu;
-  unset($submenu['edit.php?post_type=formsubmission'][10]); // Remove do menu lateral
+  // Remove do menu lateral
+  unset($submenu['edit.php?post_type=formsubmission'][10]); 
 }
 add_action('admin_menu', 'monks_remove_add_new_formsubmission');
 
@@ -67,6 +68,18 @@ function monks_disable_new_formsubmission_button()
   }
 }
 add_action('admin_head', 'monks_disable_new_formsubmission_button');
+
+function monks_disable_formsubmission_editor()
+{
+  global $pagenow, $post;
+
+  if ($pagenow === 'post.php' && isset($post) && $post->post_type === 'formsubmission') {
+    // Remove o editor padrão
+    remove_post_type_support('formsubmission', 'editor');
+  }
+}
+
+add_action('admin_init', 'monks_disable_formsubmission_editor');
 
 /* API para retornar as tags usadas nos posts com uma categoria específica */
 function monks_api_get_tags_by_term($request)
@@ -361,3 +374,46 @@ function monks_custom_category_column_content($content, $column_name, $term_id)
   return $content;
 }
 add_filter('manage_category_custom_column', 'monks_custom_category_column_content', 10, 3);
+
+
+/* *
+ * Adiciona suporte para CORS 
+ */
+function monks_rest_cors_headers($headers)
+{
+  // Permite qualquer origem (modifique se necessário)
+  $headers['Access-Control-Allow-Origin'] = '*';
+  // Permite métodos GET, POST e OPTIONS
+  $headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS';
+  // Permite cabeçalhos específicos
+  $headers['Access-Control-Allow-Headers'] = 'X-Requested-With, Content-Type, Authorization, X-Form-Token';
+  return $headers;
+}
+
+add_filter('rest_post_dispatch', function ($result) {
+  if (is_wp_error($result)) return $result;
+
+  $headers = monks_rest_cors_headers([]);
+  foreach ($headers as $key => $value) {
+    header("$key: $value");
+  }
+
+  return $result;
+}, 15);
+
+/**
+ * Adiciona suporte para requisições OPTIONS (necessário para CORS)
+ */
+function monks_handle_preflight()
+{
+  if ('OPTIONS' === $_SERVER['REQUEST_METHOD']) {
+    $headers = monks_rest_cors_headers([]);
+    foreach ($headers as $key => $value) {
+      header("$key: $value");
+    }
+    status_header(200);
+    exit;
+  }
+}
+
+add_action('init', 'monks_handle_preflight');
