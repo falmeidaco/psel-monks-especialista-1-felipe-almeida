@@ -1,6 +1,7 @@
+import { useState, useEffect } from 'react';
+import api from '../../services/api';
 import Post from './Post'
 import styled from "styled-components"
-import { useState, useEffect } from 'react';
 
 
 const SSection = styled.section`
@@ -69,41 +70,33 @@ export default function PostListFeature({ term }) {
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:8000/wp-json/custom/v1/posts-by-term?term=${term}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response;
+    api.get(`/posts-by-term?term=${term}`)
+      .then((response) => {
+        setTitle(response.data.name);
+        setDescription(response.data.description);
+        setPosts(response.data.posts)
       })
-      .then(response => response.json())
-      .then(data => {
-        setTitle(data.name);
-        setDescription(data.description);
-        setPosts(data.posts)
-      }
-      ).catch(error => {
-        setTitle('Conteúdo não disponível');
+      .catch((error) => {
+        console.error("Erro na requisição da API:", error);
         setPosts([]);
-      }
-      );
-  }, []);
+      });
+  }, [])
+
+  if (posts === null) {
+    return <p>Carregando...</p>;
+  }
 
   return (
     <SSection>
-      {posts === null ?
-        <p>Carregando...</p>
-        :
-        <SListPinterest>
-          <div>
-            <SHeading>{title}</SHeading>
-            <SText>{description}</SText>
-          </div>
-          {posts.map((post) => (
-            <Post layout="image-only" key={post.id} post={post} />
-          ))}
-        </SListPinterest>
-      }
+      <SListPinterest>
+        <div>
+          <SHeading>{title}</SHeading>
+          <SText>{description}</SText>
+        </div>
+        {posts.map((post) => (
+          <Post layout="image-only" key={post.id} post={post} />
+        ))}
+      </SListPinterest>
     </SSection>
   );
 }
