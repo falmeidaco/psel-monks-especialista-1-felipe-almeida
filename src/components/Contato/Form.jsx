@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, use } from "react"
 import api from "../../services/api"
 import styled from "styled-components"
 
@@ -165,6 +165,7 @@ const FormChallengeStyled = styled.div`
 
 export default function Form() {
 
+  const [challengeNumber, setChallengeNumber] = useState({ n1: 0, n2: 0 });
   const [message, setMessage] = useState({
     type: "error",
     text: "",
@@ -176,14 +177,31 @@ export default function Form() {
     phone: '',
     email: '',
     message: '',
+    challenge: ''
   });
 
+  useEffect(() => {
+    challengeFn()
+  }, []);
+  const challengeFn = () => {
+    const n1 = Math.floor(Math.random() * 10) + 1;
+    const n2 = Math.floor(Math.random() * 10) + 1;
+    setChallengeNumber({ n1, n2 });
+  }
+
+  const validateChallenge = () => {
+    if (challengeNumber.n1 + challengeNumber.n2 === Number(values.challenge)) {
+      return true
+    }
+    return false
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target
     setValues({ ...values, [name]: value })
-
-    if (name === "email") {
+    if (name === "challenge") {
+      return
+    } else if (name === "email") {
       if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         setErrors({
           ...errors,
@@ -215,7 +233,6 @@ export default function Form() {
     }
   }
 
-
   const validateFields = (fields) => {
     let result = false
     let _errors = errors
@@ -240,17 +257,30 @@ export default function Form() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (validateFields(["name", "phone", "email", "message"])) {
+
+    if (validateFields(["name", "phone", "email", "message"]) ) {
+      if (!validateChallenge()) {
+        challengeFn();
+        setMessage({
+          type:"error",
+          text:"Resposta incorreta."
+        });
+        setValues(prev => ({...prev, challenge: ''}));
+        setErrors(prev => ({...prev, challenge: true}));
+        return
+      }
+
       setSubmiting(true)
       setMessage({
         type:"none",
         text:""
       });
+
       try {
         const response = await api.post('/new-formsubmission', values, {
           headers: {
             'Content-Type': 'application/json',
-            'X-Form-Token': 'monks2025'
+            'X-Form-Token': 'monks2025@'
           }
         });
         setValues({
@@ -308,13 +338,13 @@ export default function Form() {
           Verificação de segurança
         </div>
         <div className="challenge-n">
-          <span>123</span> + <span>456</span>
+          <span>{challengeNumber.n1}</span> + <span>{challengeNumber.n2}</span>
         </div>
         <div>
           =
         </div>
         <div className="challenge-answer">
-          <InputStyled type="text" />
+          <InputStyled className={errors.challenge ? "error" : ""} name="challenge" onChange={handleChange} value={values.challenge} required maxLength="2" type="number" placeholder="Resposta" />
         </div>
       </FormChallengeStyled>
 
