@@ -137,7 +137,8 @@ function monks_get_menu_items( $request ) {
           'parent' => $item->menu_item_parent,
           'order'  => $item->menu_order,
           'type'   => $item->type, 
-          'classes' => implode(' ', $item->classes)
+          'classes' => implode(' ', $item->classes),
+          'target'  => $item->target ?: '_self',
       ];
   }
 
