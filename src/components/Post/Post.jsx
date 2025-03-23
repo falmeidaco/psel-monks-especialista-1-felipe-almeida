@@ -1,20 +1,49 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 
 const SPost = styled.a`
-  padding:1rem;
-  background-color:white;
-  border-radius:10px;
-  padding: .5rem .5rem 1rem;
-  display:flex;
-  flex-direction:column;
-  gap:.5rem;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  img {
-    border-radius: 8px;
-    width: 100%;
-  }
+  ${(props) => {
+    switch (props.$layout) {
+      case "image-only":
+        return css`
+          display:flex;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          .media {
+            width: 100%;
+            height: 100%;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+          }
+          .text {
+            display:none;
+          }
+        `;
+      default:
+        return css`
+          padding: 1rem;
+          background-color:white;
+          border-radius:10px;
+          padding: .5rem .5rem 1rem;
+          display:flex;
+          flex-direction:column;
+          gap:.5rem;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          img {
+            border-radius: 8px;
+            width: 100%;
+          }
+      `;
+    }
+  }}
 `;
+
+SPost.defaultProps = {
+  layout: "default"
+}
 
 const SPostText = styled.div`
   display:flex;
@@ -41,9 +70,9 @@ const SPostText = styled.div`
 `;
 
 
-export default function Post({ post }) {
+export default function Post({ post, layout }) {
   return (
-    <SPost href="#">
+    <SPost $layout={(layout) ? layout : "default"} href="#">
       <div className="media">
         <img src={post.thumbnail_url} alt="Imagem do post" />
       </div>
