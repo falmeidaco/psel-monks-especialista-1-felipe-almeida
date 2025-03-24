@@ -1,12 +1,54 @@
-# React + Vite
+# **Case Monks**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## **Sobre este repositório**
+Este projeto foi construído como entrega do case do para o processo seletivo da Agência Monks. A aplicação consiste em uma página desenvolvida com **React** e tem como gestão uma aplicação de **WordPress**. Os dados consumidos do front-end são resgatados da API do WordPress.
 
-Currently, two official plugins are available:
+### **Sobre o front-end**
+A aplicação foi construída utilizando a biblioteca React (instalado pelo Vite). O projeto react utiliza a biblioteca **styled** para a estilização dos componentes. 
+A aplicação resgata da API construída, os dados para exibição da página:
+- Posts
+- Menus
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### **Sobre o back-end**
+Para o back-end, foi utilizado o CMS Wordpress para gestão dos conteúdos da página. Foi construído:
+- Tema personalizado para personalização da lógica de acordo com os conteúdos da landinpage
 
-## Expanding the ESLint configuration
+O CMS não utiliza nenhum outro plugin como pré-requisito. As estrutura foi construída utilizando as funcionalidades já disponíveis no Wordpress:
+- Para gestão dos menus foi utilizado a funcionalidade padrão de gerenciamento de menus;
+- Para gestão dos posts, foi utilizado o tipo de conteúdo padrão (post) com suas as categorias e tags;
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Foi desenvolvido end-points customizados para expor apenas os dados necessários consumidos pelo front-end da página
+
+[Instruções para instalar todas essas depêndencias](https://github.com/murillotorres/psel-monks-especialista-1-murillo/blob/main/install.md)
+
+## **Instalação do Projeto**
+1. Faça o clone deste repositório para uma pasta na máquina local
+```bash
+git clone https://github.com/falmeidaco/psel-monks-especialista-1-felipe-almeida.git
+```
+2. Acesse a pasta pelo terminal e construa o container do docker
+```bash
+cd psel-monks-especialista-1-felipe-almeida
+docker-compose up -d
+```
+3. Após concluído o processo, instale as dependências do Node
+```bash
+npm install
+```
+
+A instalação do container já popula o banco de dados com registros e copia a pasta do tema para dentro da instalação do WordPress
+
+## **Rodando o projeto**
+
+Após a instalação, para acessar o projeto, pasta executar o comando
+```bash
+npm run dev
+```
+Será disponibilizado no console, o endereço de acesso da aplicação front-end.
+
+Para gestão do back-end, o acesso ao painel do WordPress estará disponível pelo endereço http://localhost:8000
+
+🔐 As credencias de acesso do WordPress são:
+
+* E-mail: monks
+* Usuário: monks
