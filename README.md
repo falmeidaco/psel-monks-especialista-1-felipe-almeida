@@ -20,7 +20,7 @@ Nenhum plugin adicional é necessário, pois toda a estrutura foi construída ut
 
 Além disso, foram desenvolvidos **endpoints personalizados** para expor apenas os dados necessários ao front-end.  
 
-📌 [Instruções para instalar todas as dependências](https://github.com/murillotorres/psel-monks-especialista-1-murillo/blob/main/install.md)  
+📌 Instruções para instalar todas as dependências  
 
 ---
 
