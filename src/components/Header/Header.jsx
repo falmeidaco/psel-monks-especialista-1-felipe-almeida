@@ -8,7 +8,7 @@ export const HeaderStyled = styled.div`
   width:100%;
   max-width: var(--max-site-width);
   height: var(--header-height);
-  z-index: 20;
+  z-index: 30;
   display: flex;
   align-items: center;
   color: #EAE8E4;
@@ -38,13 +38,18 @@ export const HeaderStyled = styled.div`
       }
     }
     ul {
-      z-index: 15;
+      z-index: 30;
       display: flex;
       gap: 1rem;
       list-style: none;
       margin:0;
       padding:0;
       transition: transform 0.3s ease-in-out;
+
+      li.mobile-close-menu {
+        display: none;
+      }
+
       a {
         color:white;
         text-decoration:none;
@@ -75,6 +80,7 @@ export const HeaderStyled = styled.div`
 
     &.menu-open {
       background-color: var(--color-dark);
+     
       nav {
         ul {
           transform: translateY(0);
@@ -92,8 +98,9 @@ export const HeaderStyled = styled.div`
 
     nav {
       .menu-mobile-toggle {
-        display:block;    
+        display:block;
       }
+
       ul {
         position: absolute;
         background-color: var(--color-purple-light);
@@ -110,12 +117,35 @@ export const HeaderStyled = styled.div`
           color:var(--color-dark);
           font-weight: 600;
           padding: .3rem 2rem;
+
           &:hover {
             font-weight: 600;
           }
 
           &:before {
             visibility:visible;
+          }
+        }
+          
+        li.mobile-close-menu {
+          display: block;
+          padding: 0;
+          margin-top: 2rem;
+
+          a {
+            margin:0 auto;
+            display: block;
+            text-align: center;
+
+            svg {
+              --size: 100px;
+              width: var(--size);
+              height: var(--size);
+            }
+
+            &:before {
+              display:none;
+            }
           }
         }
       }
@@ -148,7 +178,7 @@ export default function Header() {
   return (
     <HeaderStyled className={(showMenu) ? 'menu-open' : 'menu-close'} as="header">
       <div className="site-logo">
-        <a href="#">
+        <a href="#" title="Monks Agência">
           <Sprites id="svg-monks" />
         </a>
       </div>
@@ -162,61 +192,13 @@ export default function Header() {
               <a href={item.url}>{item.title}</a>
             </li>
           ))}
+          <li className="mobile-close-menu">
+            <a onClick={toggleMenu} href="#">
+              <Sprites id="svg-mobile-close-menu" />
+            </a>
+          </li>
         </ul>
       </nav>
     </HeaderStyled>
   )
 }
-
-/*
-
-position: absolute;
-  height: var(--header-height);
-  z-index: 10;
-  padding: 0 3rem;
-  display: flex;
-  align-items: center;
-  color: #EAE8E4;
-  gap: 2rem;
-  box-sizing: border-box;
-
-  nav ul {
-    display: flex;
-    gap: 1rem;
-    list-style: none;
-    margin:0;
-    padding:0;
-    a {
-      font-weight: 200;
-      color:white;
-      text-decoration:none;
-      display:flex;
-      align-items:center;
-      gap:.5rem;
-      &:before {
-        content: "•";
-        visibility:hidden;
-        font-size: 2rem;
-      }
-      &:hover {
-        font-weight: 400;
-        &:before {
-          visibility:visible;
-        }
-      }
-    }
-  }
-    
-  @media (max-width: 768px) {
-    padding: 0 1rem;
-    nav {
-      display: none;
-    }
-  }
-
-  svg {
-    max-width:140px;
-    height:auto;
-  }
-
-  */
