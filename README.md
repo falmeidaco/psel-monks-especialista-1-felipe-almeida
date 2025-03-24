@@ -1,54 +1,62 @@
-# **Case Monks**
+# **Case Monks - Felipe Almeida**  
 
-## **Sobre este repositório**
-Este projeto foi construído como entrega do case do para o processo seletivo da Agência Monks. A aplicação consiste em uma página desenvolvida com **React** e tem como gestão uma aplicação de **WordPress**. Os dados consumidos do front-end são resgatados da API do WordPress.
+## **Sobre este repositório**  
+Este projeto foi desenvolvido como parte do processo seletivo da **Agência Monks**. A aplicação consiste em uma página construída com **React**, enquanto a gestão de conteúdo é realizada via **WordPress**. Os dados exibidos no front-end são obtidos por meio da API do WordPress.  
 
-### **Sobre o front-end**
-A aplicação foi construída utilizando a biblioteca React (instalado pelo Vite). O projeto react utiliza a biblioteca **styled** para a estilização dos componentes. 
-A aplicação resgata da API construída, os dados para exibição da página:
-- Posts
-- Menus
+### **Front-end**  
+O front-end foi desenvolvido com **React**, utilizando o **Vite** para configuração do projeto. A estilização dos componentes foi feita com a biblioteca **styled-components**.  
 
-### **Sobre o back-end**
-Para o back-end, foi utilizado o CMS Wordpress para gestão dos conteúdos da página. Foi construído:
-- Tema personalizado para personalização da lógica de acordo com os conteúdos da landinpage
+Os dados consumidos da API incluem:  
+- **Posts**  
+- **Menus**  
 
-O CMS não utiliza nenhum outro plugin como pré-requisito. As estrutura foi construída utilizando as funcionalidades já disponíveis no Wordpress:
-- Para gestão dos menus foi utilizado a funcionalidade padrão de gerenciamento de menus;
-- Para gestão dos posts, foi utilizado o tipo de conteúdo padrão (post) com suas as categorias e tags;
+### **Back-end**  
+Para o back-end, foi utilizado o **WordPress CMS** para gerenciar o conteúdo da página. As principais implementações incluem:  
+- **Tema personalizado**, permitindo maior controle sobre a exibição do conteúdo da landing page.  
 
-Foi desenvolvido end-points customizados para expor apenas os dados necessários consumidos pelo front-end da página
+Nenhum plugin adicional é necessário, pois toda a estrutura foi construída utilizando funcionalidades nativas do WordPress:  
+- **Gerenciamento de menus**: Utiliza a funcionalidade padrão do WordPress.  
+- **Gerenciamento de posts**: Baseado no tipo de conteúdo padrão (**post**), incluindo categorias e tags.  
 
-[Instruções para instalar todas essas depêndencias](https://github.com/murillotorres/psel-monks-especialista-1-murillo/blob/main/install.md)
+Além disso, foram desenvolvidos **endpoints personalizados** para expor apenas os dados necessários ao front-end.  
 
-## **Instalação do Projeto**
-1. Faça o clone deste repositório para uma pasta na máquina local
+📌 [Instruções para instalar todas as dependências](https://github.com/murillotorres/psel-monks-especialista-1-murillo/blob/main/install.md)  
+
+---
+
+## **Instalação do Projeto**  
+
+1️⃣ **Clone o repositório**  
 ```bash
 git clone https://github.com/falmeidaco/psel-monks-especialista-1-felipe-almeida.git
-```
-2. Acesse a pasta pelo terminal e construa o container do docker
+```  
+
+2️⃣ **Acesse a pasta e inicialize o Docker**  
 ```bash
 cd psel-monks-especialista-1-felipe-almeida
 docker-compose up -d
-```
-3. Após concluído o processo, instale as dependências do Node
+```  
+
+3️⃣ **Instale as dependências do Node**  
 ```bash
 npm install
-```
+```  
 
-A instalação do container já popula o banco de dados com registros e copia a pasta do tema para dentro da instalação do WordPress
+✅ O processo de instalação do container já popula o banco de dados com registros e copia a pasta do tema para dentro da instalação do WordPress.  
 
-## **Rodando o projeto**
+---
 
-Após a instalação, para acessar o projeto, pasta executar o comando
+## **Executando o projeto**  
+
+Para rodar o projeto, utilize o comando:  
 ```bash
 npm run dev
-```
-Será disponibilizado no console, o endereço de acesso da aplicação front-end.
+```  
+O console exibirá o endereço de acesso à aplicação front-end.  
 
-Para gestão do back-end, o acesso ao painel do WordPress estará disponível pelo endereço http://localhost:8000
+Para acessar o painel administrativo do WordPress, utilize:  
+📌 **URL:** [http://localhost:8000](http://localhost:8000)  
 
-🔐 As credencias de acesso do WordPress são:
-
-* E-mail: monks
-* Usuário: monks
+🔐 **Credenciais de acesso ao WordPress:**  
+- **Usuário:** monks  
+- **E-mail:** monks  
