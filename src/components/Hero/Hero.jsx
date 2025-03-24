@@ -97,7 +97,7 @@ export default function Hero() {
           <h1>Lorem ipsum dolor sit amet consectetur</h1>
           <p>Lorem ipsum dolor sit amet consectetur. Semper orci adipiscing faucibus sit scelerisque quis commodo aenean viverra</p>
         </div>
-        <div class="scroll">
+        <div className="scroll">
           <Sprites id="svg-scroll" />
         </div>
       </div>
