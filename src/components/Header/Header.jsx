@@ -17,6 +17,7 @@ export const HeaderStyled = styled.div`
   left:50%;
   transform:translateX(-50%);
   padding: 0 3rem;
+  transition: background-color 0.3s ease-in-out;
 
   .site-logo {
     svg {
@@ -37,12 +38,13 @@ export const HeaderStyled = styled.div`
       }
     }
     ul {
+      z-index: 15;
       display: flex;
       gap: 1rem;
       list-style: none;
       margin:0;
       padding:0;
-
+      transition: transform 0.3s ease-in-out;
       a {
         color:white;
         text-decoration:none;
@@ -70,6 +72,23 @@ export const HeaderStyled = styled.div`
   @media (max-width: 768px) {
     gap: 1.5rem;
     padding: 0 1rem;
+
+    &.menu-open {
+      background-color: var(--color-dark);
+      nav {
+        ul {
+          transform: translateY(0);
+        }
+      }
+    }
+
+    &.menu-close {
+      nav {
+        ul {
+          transform: translateY(calc(-100% - var(--header-height)));
+        }
+      }
+    }
 
     nav {
       .menu-mobile-toggle {
@@ -114,7 +133,7 @@ export default function Header() {
     console.log(showMenu);
     setShowMenu(prev => (!prev));
   }
-  
+
   /* Carrega itens do menu do rodapé */
   useEffect(() => {
     api.get("/menu?menu=topo")
@@ -127,7 +146,7 @@ export default function Header() {
   }, []);
 
   return (
-    <HeaderStyled className={(showMenu) ? 'menu-open' : ''} as="header">
+    <HeaderStyled className={(showMenu) ? 'menu-open' : 'menu-close'} as="header">
       <div className="site-logo">
         <a href="#">
           <Sprites id="svg-monks" />
