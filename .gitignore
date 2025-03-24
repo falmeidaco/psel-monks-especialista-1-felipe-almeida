@@ -24,9 +24,4 @@ dist-ssr
 *.sw?
 
 # Wordpress Folder
-wordpress_data/*
-!wordpress_data/wp-content/
-wordpress_data/wp-content/*
-!wordpress_data/wp-content/themes/
-wordpress_data/wp-content/themes/*
-!wordpress_data/wp-content/themes/monks/
+wordpress_data
