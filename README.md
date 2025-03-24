@@ -59,4 +59,4 @@ Para acessar o painel administrativo do WordPress, utilize:
 
 🔐 **Credenciais de acesso ao WordPress:**  
 - **Usuário:** monks  
-- **E-mail:** monks  
+- **Senha:** monks  
